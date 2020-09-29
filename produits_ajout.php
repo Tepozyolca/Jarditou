@@ -13,15 +13,15 @@
 		<?php
 			echo "<br>Référence <br>";
 		?>		
-		<input type="text" name="pro_ref">
+		<input type="text" maxlength=10 name="pro_ref">
 		<?php
 			echo "<br>Libellé <br>";
 		?>
-		<input type="text" name="pro_libelle">
+		<input type="text" maxlength=200 name="pro_libelle">
 		<?php
 			echo "<br>Description <br>";
 		?>
-		<input type="text" name="pro_description">
+		<input type="text" maxlength=1000 name="pro_description">
 		<?php
 			echo "<br>Prix <br>";
 		?>
@@ -29,11 +29,11 @@
 		<?php
 			echo "<br>Stock <br>";
 		?>
-		<input type="text" name="pro_stock">
+		<input type="text" maxlength=30 name="pro_stock">
 		<?php
 			echo "<br>Couleur <br>";
 		?>
-		<input type="text" name="pro_couleur">
+		<input type="text" maxlength=4 name="pro_couleur">
 		<?php
 			echo "<br>Extention photo <br>";
 		?>
@@ -41,8 +41,7 @@
 		<?php
 			echo "<br>Disponible? <br>";
 		?>
-		<input type="radio" name="pro_bloque"value=1>Oui<br>
-		<input type="radio" name="pro_bloque"value=0>Non<br>
+		<input type="checkbox" name="pro_bloque" value='1'>Non<br>
 		<?php
 			echo "<br>";
 		?>
