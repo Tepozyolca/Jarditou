@@ -3,13 +3,28 @@
 	<?php
 		require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
 		$db = connexionBase(); // Appel de la fonction de connexion
+		
+		$requete = "SELECT cat_id, cat_nom FROM categories";
+		$result = $db->query($requete);
 	?>
 	
-	<form action="produits_ajout_script.php" method="post">  
+	<form action="produits_ajout_script.php" method="post" enctype="multipart/form-data">  
 		<?php
-			echo "<br>Catégorie ID<br>";
+			echo "<br>Type de produit<br>";
 		?>
-		<input type="text" name="pro_cat_id">    
+		<select name="pro_cat_id">    
+		<?php
+			$cat_id = 0;
+			while ($value = $result->fetch(PDO::FETCH_OBJ))
+			{
+				$cat_id++;
+				if($cat_id == 1)
+					echo "<option value=\"$value->cat_id\" selected>".$value->cat_nom."</option>";
+				else
+					echo "<option value=\"$value->cat_id\">".$value->cat_nom."</option>";
+			}
+		?>
+		</select>
 		<?php
 			echo "<br>Référence <br>";
 		?>		
@@ -35,13 +50,14 @@
 		?>
 		<input type="text" maxlength=4 name="pro_couleur">
 		<?php
-			echo "<br>Extention photo <br>";
+			echo "<br>Photo?<br>";
 		?>
-		<input type="text" name="pro_photo">
+		<input type="file" name="fichier">
 		<?php
 			echo "<br>Disponible? <br>";
 		?>
-		<input type="checkbox" name="pro_bloque" value='1'>Non<br>
+		<input type="radio" name="pro_bloque" value='1' checked>Oui<br>
+		<input type="radio" name="pro_bloque" value='0'>Non<br>
 		<?php
 			echo "<br>";
 		?>

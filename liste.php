@@ -10,7 +10,7 @@
 		<?php
 			require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
 			$db = connexionBase(); // Appel de la fonction de connexion
-			$requete = "SELECT pro_id, pro_ref, pro_libelle, pro_prix, pro_stock, pro_couleur, pro_d_ajout, pro_d_modif, pro_photo, pro_bloque FROM produits ORDER BY pro_d_ajout DESC";
+			$requete = "SELECT pro_id, pro_cat_id, pro_ref, pro_libelle, pro_prix, pro_stock, pro_couleur, pro_d_ajout, pro_d_modif, pro_photo, pro_bloque FROM produits ORDER BY pro_d_ajout DESC";
 
 			$result = $db->query($requete);
 
@@ -37,7 +37,10 @@
 			while ($row = $result->fetch(PDO::FETCH_OBJ))
 			{
 				echo "<tr>";
-				echo "<td>".$row->pro_photo."</td>";
+				if(is_file("images/".$row->pro_id.".".$row->pro_photo))
+					echo "<td><img src=\"images/".$row->pro_id.".".$row->pro_photo."\"";
+				else
+					echo "<td>".$row->pro_photo."</td>";
 				echo "<td>".$row->pro_id."</td>";
 				echo "<td>".$row->pro_ref."</td>";
 				echo "<td><a href=detail.php?pro_id=".$row->pro_id.">".$row->pro_libelle."</a>";

@@ -12,18 +12,17 @@
 		$pro_prix = $_POST['pro_prix'];
 		$pro_stock = $_POST['pro_stock'];
 		$pro_couleur = $_POST['pro_couleur'];
-		$pro_photo = $_POST['pro_photo'];
 		$pro_d_ajout = date('Y-m-d');
 		$pro_bloque = $_POST['pro_bloque'];
 		
-		if (is_numeric($pro_cat_id) && $pro_cat_id >= 0 && is_numeric($pro_prix) && $pro_prix >= 0 && is_numeric($pro_stock) && $pro_stock >= 0)
+		if ($pro_cat_id > 0 && is_numeric($pro_prix) && $pro_prix >= 0 && is_numeric($pro_stock) && $pro_stock >= 0)
 		{		 
-			$erreurform = "Location:produits_ajout.php";
+			$erreurform = "Location:produits_ajout.php?erreur=false";
 			$erreur = 0;
 			if (empty($_POST["pro_cat_id"]))
 			{       
 				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur2=true";
+				$seterreur[] = "&erreur2=true";
 				$erreurform = array_merge($erreurform, $seterreur);
 				$erreurform = implode ($erreurform);
 				$erreur = 1;
@@ -31,7 +30,7 @@
 			if (empty($_POST["pro_ref"])) 
 			{       
 				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur3=true";
+				$seterreur[] = "&erreur3=true";
 				$erreurform = array_merge($erreurform, $seterreur);
 				$erreurform = implode ($erreurform);
 				$erreur = 1;
@@ -39,7 +38,7 @@
 			if (empty($_POST["pro_libelle"]))
 			{       
 				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur4=true";
+				$seterreur[] = "&erreur4=true";
 				$erreurform = array_merge($erreurform, $seterreur);
 				$erreurform = implode ($erreurform);
 				$erreur = 1;
@@ -47,27 +46,46 @@
 			if (empty($_POST["pro_prix"])) 
 			{     
 				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur5=true";
+				$seterreur[] = "&erreur5=true";
 				$erreurform = array_merge($erreurform, $seterreur);
 				$erreurform = implode ($erreurform);
 				$erreur = 1;
 			}
 			if (empty($_POST["pro_stock"])) 
 			{      
-				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur6=true";
-				$erreurform = array_merge($erreurform, $seterreur);
-				$erreurform = implode ($erreurform);
-				$erreur = 1;
+				if($_POST[pro_stock] != 0)
+				{
+					$erreurform = str_split($erreurform);
+					$seterreur[] = "&erreur6=true";
+					$erreurform = array_merge($erreurform, $seterreur);
+					$erreurform = implode ($erreurform);
+					$erreur = 1;
+				}
 			} 
-			if (empty($_POST["pro_photo"]))
-			{       
-				$erreurform = str_split($erreurform);
-				$seterreur[] = "?erreur7=true";
-				$erreurform = array_merge($erreurform, $seterreur);
-				$erreurform = implode ($erreurform);
-				$erreur = 1;
-			} 	
+
+			// On met les types autorisés dans un tableau (ici pour une image)
+			$aMimeTypes = array("image/gif", "image/jpeg", "image/pjpeg", "image/png", "image/x-png", "image/tiff");
+
+			// On extrait le type du fichier via l'extension FILE_INFO 
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$mimetype = finfo_file($finfo, $_FILES["fichier"]["tmp_name"]);
+			finfo_close($finfo);
+
+			if (in_array($mimetype, $aMimeTypes))
+			{
+				/* Le type est parmi ceux autorisés, donc OK, on va pouvoir 
+				déplacer et renommer le fichier */
+				$pro_photo = substr(strrchr($_FILES["fichier"]["name"], "."), 1);;
+			} 
+			else 
+			{
+					// Le type n'est pas autorisé, donc ERREUR
+					$erreurform = str_split($erreurform);
+					$seterreur[] = "&erreur8=true";
+					$erreurform = array_merge($erreurform, $seterreur);
+					$erreurform = implode ($erreurform);
+					$erreur = 1;    
+			}    
 			if ($erreur == 1)
 			{
 				header($erreurform);
@@ -87,11 +105,15 @@
 			$requete->bindValue(":pro_d_ajout", $pro_d_ajout); 
 			$requete->bindValue(":pro_bloque", $pro_bloque);
 			$requete->execute();
+			$requete = "SELECT pro_id FROM produits WHERE pro_cat_id =".$pro_cat_id." && pro_ref =\"".$pro_ref."\"";
+			$result = $db->query($requete);
+			$nomImage = $result->fetch(PDO::FETCH_OBJ);
+			move_uploaded_file($_FILES["fichier"]["tmp_name"], "images/".$nomImage->pro_id.".".$pro_photo);
 			header("Location:liste.php");
 		}
 		else
 		{
-			header("Location:produits_ajout.php?erreur=10");
+			header("Location:produits_ajout.php?erreur9=true");
 			exit;
 		}
 	?>
