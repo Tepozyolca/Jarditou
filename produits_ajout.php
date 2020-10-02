@@ -1,9 +1,9 @@
+<!DOCTYPE HTML>  
 <html>
 <body>
 	<?php
-		require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
+		require "Fonctions jarditou.php"; // Inclusion de notre bibliothèque de fonctions
 		$db = connexionBase(); // Appel de la fonction de connexion
-		
 		$requete = "SELECT cat_id, cat_nom FROM categories";
 		$result = $db->query($requete);
 	?>

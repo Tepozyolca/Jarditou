@@ -4,14 +4,17 @@
 		<meta charset="UTF-8">
 		<title>Atelier PHP N°4 - page de détail</title>
 		<?php   
-			require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
-
+			require "Fonctions jarditou.php"; // Inclusion de notre bibliothèque de fonctions
 			$db = connexionBase(); // Appel de la fonction de connexion	
+			
 			$pro_id = $_GET["pro_id"]; // Récupération de l'identifiant du produit
+			
 			$requete = "SELECT * FROM produits WHERE pro_id=".$pro_id; //Requète des infos du produit
 			$result = $db->query($requete); // Récupération des infos du produit
 			$produit = $result->fetch(PDO::FETCH_OBJ);
+			
 			$pro_cat_id = $produit->pro_cat_id;
+			
 			$requete2 = "SELECT cat_id, cat_nom FROM categories WHERE cat_id=".$pro_cat_id;
 			$requete3 = "SELECT cat_id, cat_nom FROM categories";
 			$result2 = $db->query($requete2);

@@ -8,10 +8,9 @@
 <body> 
 	<div class="container">
 		<?php
-			require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
+			require "Fonctions jarditou.php"; // Inclusion de notre bibliothèque de fonctions
 			$db = connexionBase(); // Appel de la fonction de connexion
 			$requete = "SELECT pro_id, pro_cat_id, pro_ref, pro_libelle, pro_prix, pro_stock, pro_couleur, pro_d_ajout, pro_d_modif, pro_photo, pro_bloque FROM produits ORDER BY pro_d_ajout DESC";
-
 			$result = $db->query($requete);
 
 			if (!$result) 
@@ -30,7 +29,7 @@
 			echo "<table>";
 			echo "<th>";
 			echo "<tr>";
-			echo "<td>Photo</td> <td>ID</td> <td>Référence</td> <td>Libellé</td> <td>Prix</td> <td>Stock</td> <td>Couleur</td> <td>Ajout</td> <td>Modif</td> <td>Bloqué</td>";
+			echo "<td></td> <td>ID</td> <td>Référence</td> <td>Libellé</td> <td>Prix</td> <td>Stock</td> <td>Couleur</td> <td>Ajout</td> <td>Modif</td> <td>Bloqué</td>";
 			echo "</tr>";
 			echo "</th>";
 			

@@ -1,8 +1,9 @@
+<!DOCTYPE HTML>  
 <html>
 <body>
 	<?php     
 
-		require "connexion_bdd.php"; // Inclusion de notre bibliothèque de fonctions
+		require "Fonctions jarditou.php"; // Inclusion de notre bibliothèque de fonctions
 		$db = connexionBase(); // Appel de la fonction de connexion
 		
 		$pro_id = $_POST['pro_id'];
